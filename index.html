@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stress Out - Find Your Calm</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .auth-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .user-avatar img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        .user-email {
+            font-size: 0.7rem;
+            opacity: 0.8;
+            color: white;
+        }
+
+        .auth-button {
+            background: rgba(66, 133, 244, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 180px;
+            justify-content: center;
+        }
+
+        .auth-button:hover {
+            background: rgba(66, 133, 244, 1);
+            border-color: rgba(255, 255, 255, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .auth-button.sign-out {
+            background: rgba(244, 67, 54, 0.8);
+        }
+
+        .auth-button.sign-out:hover {
+            background: rgba(244, 67, 54, 1);
+        }
+
+        .sign-in-prompt {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin: 2rem 0;
+            color: white;
+        }
+
+        .sign-in-prompt h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .sign-in-prompt p {
+            opacity: 0.9;
+            margin-bottom: 0;
+        }
+
+        .protected-content {
+            display: none;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            background-image: url('https://images.unsplash.com/photo-1528319725582-ddc096101511?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(102, 126, 234, 0.7);
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: drift 20s linear infinite;
+        }
+
+        @keyframes drift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 6rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.3s backwards;
+            margin-bottom: 2rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.6s backwards;
+        }
+
+        .nav-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            min-width: 200px;
+            justify-content: center;
+        }
+
+        .nav-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.6);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-button:active {
+            transform: translateY(-1px);
+        }
+
+        .button-icon {
+            font-size: 1.3rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Infinite Scroll Cards */
+        .scroll-section {
+            background: white;
+            padding: 4rem 0;
+            overflow: hidden;
+        }
+
+        .scroll-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #667eea;
+        }
+
+        .scroll-container {
+            display: flex;
+            animation: scroll 40s linear infinite;
+            width: fit-content;
+        }
+
+        .scroll-container:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .stress-card {
+            min-width: 350px;
+            margin: 0 1rem;
+            padding: 0;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            overflow: hidden;
+        }
+
+        .stress-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .stress-card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .stress-card-content {
+            padding: 2rem;
+        }
+
+        .stress-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        .stress-card p {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* 3D Cards Section */
+        .cards-3d-section {
+            background: #f5f7fa;
+            padding: 5rem 2rem;
+        }
+
+        .cards-3d-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #667eea;
+        }
+
+        .cards-3d-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .card-3d {
+            perspective: 1000px;
+            height: 450px;
+        }
+
+        .card-3d-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .card-3d:hover .card-3d-inner {
+            transform: rotateY(10deg) rotateX(5deg) scale(1.05);
+        }
+
+        .card-3d-content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-3d-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-3d h3 {
+            font-size: 1.5rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .card-3d p {
+            color: #666;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .cards-3d-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">Stress Out</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link active">Home</a>
+            <a href="breathing.html" class="nav-link">Breathing</a>
+            <a href="stats.html" class="nav-link">Stats</a>
+            <a href="tips.html" class="nav-link">Tips</a>
+        </div>
+        <div class="auth-section">
+            <div id="authContainer" class="auth-container"></div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Stress Out</h1>
+            <p>Breathe, relax, and find your calm</p>
+            
+            
+            <div class="hero-buttons">
+                <button class="nav-button protected-content" onclick="window.location.href='breathing.html'">
+                    <span class="button-icon">🫁</span>
+                    Breathing Exercises
+                </button>
+                <button class="nav-button protected-content" onclick="window.location.href='stats.html'">
+                    <span class="button-icon">📊</span>
+                    Health Stats
+                </button>
+                <button class="nav-button protected-content" onclick="window.location.href='tips.html'">
+                    <span class="button-icon">💡</span>
+                    Stress Tips
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Infinite Scroll Cards -->
+    <section class="scroll-section">
+        <h2>Ways to Reduce Stress</h2>
+        <div class="scroll-container" id="scrollContainer">
+            <!-- Cards will be duplicated by JavaScript -->
+        </div>
+    </section>
+
+
+    <!-- 3D Cards Section -->
+    <section class="cards-3d-section">
+        <h2>How Breathing Reduces Stress</h2>
+        <div class="cards-3d-container">
+            <div class="card-3d">
+                <div class="card-3d-inner">
+                    <div class="card-3d-content">
+                        <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800" alt="Nervous System" class="card-3d-image">
+                        <h3>Activates Parasympathetic System</h3>
+                        <p>Deep breathing triggers your body's relaxation response, slowing heart rate and lowering blood pressure. It signals your brain that it's safe to calm down.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-3d">
+                <div class="card-3d-inner">
+                    <div class="card-3d-content">
+                        <img src="https://images.unsplash.com/photo-1499728603263-13726abce5fd?w=800" alt="Oxygen Flow" class="card-3d-image">
+                        <h3>Increases Oxygen Flow</h3>
+                        <p>Controlled breathing delivers more oxygen to your brain and muscles, improving clarity and reducing physical tension. Your body functions better when properly oxygenated.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-3d">
+                <div class="card-3d-inner">
+                    <div class="card-3d-content">
+                        <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=800" alt="Mindfulness" class="card-3d-image">
+                        <h3>Promotes Mindfulness</h3>
+                        <p>Focusing on your breath anchors you in the present moment, breaking the cycle of anxious thoughts. It's a form of meditation that's always available to you.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script type="module">
+        // Import local authentication module
+        import './local-auth-manager.js'
+        
+        // Infinite scroll cards data
+        const stressReductions = [
+            {
+                title: "Practice Mindfulness",
+                description: "Take 10 minutes daily to meditate and focus on the present moment. Mindfulness reduces cortisol and improves emotional regulation.",
+                image: "https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=400&h=300&fit=crop"
+            },
+            {
+                title: "Regular Exercise",
+                description: "Physical activity releases endorphins and reduces stress hormones. Even a 20-minute walk can make a significant difference.",
+                image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop"
+            },
+            {
+                title: "Quality Sleep",
+                description: "Aim for 7-9 hours of sleep per night. Good sleep helps your body recover and better handle stress throughout the day.",
+                image: "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=400&h=300&fit=crop"
+            },
+            {
+                title: "Connect with Others",
+                description: "Social support is crucial for stress management. Spend time with friends and family who lift you up.",
+                image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=400&h=300&fit=crop"
+            },
+            {
+                title: "Healthy Eating",
+                description: "A balanced diet supports your body's stress response. Avoid excessive caffeine and sugar which can increase anxiety.",
+                image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop"
+            },
+            {
+                title: "Time in Nature",
+                description: "Spending time outdoors reduces cortisol levels and improves mood. Even 15 minutes in a park can help.",
+                image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=300&fit=crop"
+            },
+            {
+                title: "Creative Activities",
+                description: "Engaging in art, music, or writing provides a healthy outlet for emotions and promotes relaxation.",
+                image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&h=300&fit=crop"
+            },
+            {
+                title: "Set Boundaries",
+                description: "Learn to say no and protect your personal time. Healthy boundaries prevent burnout and overwhelm.",
+                image: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=400&h=300&fit=crop"
+            }
+        ];
+
+        // Create and duplicate cards for infinite scroll
+        const scrollContainer = document.getElementById('scrollContainer');
+        
+        function createCards() {
+            const cardsHTML = stressReductions.map(item => `
+                <div class="stress-card">
+                    <img src="${item.image}" alt="${item.title}" class="stress-card-image">
+                    <div class="stress-card-content">
+                        <h3>${item.title}</h3>
+                        <p>${item.description}</p>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Duplicate the cards multiple times for seamless scrolling
+            scrollContainer.innerHTML = cardsHTML + cardsHTML + cardsHTML;
+        }
+
+        createCards();
+
+        // Enhanced 3D card effect with mouse movement
+        const cards3d = document.querySelectorAll('.card-3d');
+        
+        cards3d.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                
+                card.querySelector('.card-3d-inner').style.transform = 
+                    `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.querySelector('.card-3d-inner').style.transform = 
+                    'rotateX(0) rotateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

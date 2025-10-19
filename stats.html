@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Stats - Stress Out</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .auth-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-right: 1rem;
+        }
+
+        .stat-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-unit {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-left: 0.5rem;
+        }
+
+        .stat-status {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-low {
+            background: rgba(76, 175, 80, 0.6);
+            color: #2E7D32;
+            border: 2px solid #4CAF50;
+            font-weight: 700;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .status-moderate {
+            background: rgba(255, 193, 7, 0.3);
+            color: #FFC107;
+            border: 1px solid rgba(255, 193, 7, 0.5);
+        }
+
+        .status-high {
+            background: rgba(244, 67, 54, 0.3);
+            color: #F44336;
+            border: 1px solid rgba(244, 67, 54, 0.5);
+        }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 3rem;
+        }
+
+        .chart-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .chart-header h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .chart-header p {
+            opacity: 0.8;
+        }
+
+        .heart-rate-chart {
+            width: 100%;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, 
+                rgba(244, 67, 54, 0.3) 0%, 
+                rgba(255, 193, 7, 0.3) 50%, 
+                rgba(76, 175, 80, 0.3) 100%);
+            clip-path: polygon(0% 100%, 10% 85%, 20% 70%, 30% 60%, 40% 45%, 50% 55%, 60% 40%, 70% 50%, 80% 35%, 90% 45%, 100% 30%, 100% 100%);
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(1.1); }
+        }
+
+        .chart-labels {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .chart-y-axis {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1rem 0.5rem;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .stress-indicator {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+
+        .stress-level {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .stress-level.low {
+            color: #4CAF50;
+        }
+
+        .stress-level.moderate {
+            color: #FFC107;
+        }
+
+        .stress-level.high {
+            color: #F44336;
+        }
+
+        .stress-description {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .stress-recommendations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .recommendation {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+
+        .recommendation-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .recommendation-text {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .data-source {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .data-source h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #FFC107;
+        }
+
+        .data-source p {
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stat-value {
+                font-size: 2rem;
+            }
+            
+            .heart-rate-chart {
+                height: 200px;
+            }
+            
+            .stress-recommendations {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">Stress Out</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="breathing.html" class="nav-link">Breathing</a>
+            <a href="stats.html" class="nav-link active">Stats</a>
+            <a href="tips.html" class="nav-link">Tips</a>
+        </div>
+        <div class="auth-section">
+            <div id="authContainer" class="auth-container"></div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Health Stats</h1>
+            <p>Monitor your vital signs and environmental factors affecting your stress levels</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">❤️</div>
+                    <div class="stat-title">Heart Rate</div>
+                </div>
+                <div class="stat-value" id="heartRate">72<span class="stat-unit">BPM</span></div>
+                <div class="stat-status status-low" id="heartRateStatus">Low Stress</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">🌡️</div>
+                    <div class="stat-title">Temperature</div>
+                </div>
+                <div class="stat-value" id="temperature">22<span class="stat-unit">°C</span></div>
+                <div class="stat-status status-low" id="temperatureStatus">Comfortable</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">💧</div>
+                    <div class="stat-title">Humidity</div>
+                </div>
+                <div class="stat-value" id="humidity">45<span class="stat-unit">%</span></div>
+                <div class="stat-status status-low" id="humidityStatus">Optimal</div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-header">
+                <h3>Heart Rate Trend</h3>
+                <p>Real-time heart rate monitoring over the last hour</p>
+            </div>
+            <div class="heart-rate-chart">
+                <div class="chart-y-axis">
+                    <span>100</span>
+                    <span>80</span>
+                    <span>60</span>
+                    <span>40</span>
+                    <span>20</span>
+                </div>
+                <div class="chart-labels">
+                    <span>1h ago</span>
+                    <span>45m ago</span>
+                    <span>30m ago</span>
+                    <span>15m ago</span>
+                    <span>Now</span>
+                </div>
+                <div class="chart-line"></div>
+            </div>
+        </div>
+
+        <div class="stress-indicator">
+            <div class="stress-level low" id="overallStress">Low Stress</div>
+            <div class="stress-description" id="stressDescription">
+                Your current environment and vital signs indicate low stress levels. Keep up the good work!
+            </div>
+            <div class="stress-recommendations">
+                <div class="recommendation">
+                    <div class="recommendation-icon">🫁</div>
+                    <div class="recommendation-text">Continue breathing exercises</div>
+                </div>
+                <div class="recommendation">
+                    <div class="recommendation-icon">🚶‍♀️</div>
+                    <div class="recommendation-text">Take regular breaks</div>
+                </div>
+                <div class="recommendation">
+                    <div class="recommendation-icon">💧</div>
+                    <div class="recommendation-text">Stay hydrated</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="data-source">
+            <h4>📡 Data Source</h4>
+            <p>
+                <strong>Placeholder Data:</strong> This page currently displays simulated health metrics for demonstration purposes. 
+                In a real implementation, this would connect to wearable devices, environmental sensors, and health monitoring systems 
+                to provide live data on your heart rate, room temperature, humidity levels, and other stress indicators.
+            </p>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import local authentication and data modules
+        import './local-auth-manager.js'
+        import './csv-data-manager.js'
+        
+        class HealthStatsApp {
+            constructor() {
+                this.heartRate = 72;
+                this.temperature = 22;
+                this.humidity = 45;
+                this.stressLevel = 'low';
+                
+                this.initElements();
+                this.loadUserData();
+                this.startDataSimulation();
+                this.updateStressLevel();
+            }
+            
+            initElements() {
+                this.heartRateEl = document.getElementById('heartRate');
+                this.temperatureEl = document.getElementById('temperature');
+                this.humidityEl = document.getElementById('humidity');
+                this.heartRateStatusEl = document.getElementById('heartRateStatus');
+                this.temperatureStatusEl = document.getElementById('temperatureStatus');
+                this.humidityStatusEl = document.getElementById('humidityStatus');
+                this.overallStressEl = document.getElementById('overallStress');
+                this.stressDescriptionEl = document.getElementById('stressDescription');
+            }
+
+            async loadUserData() {
+                try {
+                    const user = window.authManager.getCurrentUser();
+                    if (!user) {
+                        console.log('No user logged in');
+                        return;
+                    }
+
+                    const csvManager = window.csvDataManager;
+                    
+                    // Load dashboard data
+                    const dashboardData = await csvManager.getUserDashboardData(user.id);
+                    this.updateDashboard(dashboardData);
+                    
+                    // Load recent sessions
+                    const sessions = await csvManager.getBreathingSessions(user.id, 10);
+                    this.updateRecentSessions(sessions);
+                    
+                    // Load environmental data
+                    const envData = await csvManager.getEnvironmentalData(user.id, 24);
+                    this.updateEnvironmentalChart(envData);
+                    
+                    // Load heart rate data
+                    const hrData = await csvManager.getHeartRateData(user.id, 24);
+                    this.updateHeartRateChart(hrData);
+                    
+                    // Load statistics
+                    const stats = await csvManager.getUserStatistics(user.id, 30);
+                    this.updateStatisticsChart(stats);
+                    
+                } catch (error) {
+                    console.error('Error loading user data:', error);
+                }
+            }
+
+            updateDashboard(data) {
+                if (data) {
+                    // Update dashboard with real data if available
+                    console.log('Dashboard data loaded:', data);
+                }
+            }
+
+            updateRecentSessions(sessions) {
+                if (sessions && sessions.length > 0) {
+                    console.log('Recent sessions loaded:', sessions.length);
+                }
+            }
+
+            updateEnvironmentalChart(envData) {
+                if (envData && envData.length > 0) {
+                    // Use real environmental data instead of simulation
+                    const latestData = envData[0];
+                    this.temperature = parseFloat(latestData.temperature) || this.temperature;
+                    this.humidity = parseFloat(latestData.humidity) || this.humidity;
+                    console.log('Environmental data loaded:', envData.length, 'records');
+                }
+            }
+
+            updateHeartRateChart(hrData) {
+                if (hrData && hrData.length > 0) {
+                    // Use real heart rate data instead of simulation
+                    const latestData = hrData[0];
+                    this.heartRate = parseFloat(latestData.heart_rate_bpm) || this.heartRate;
+                    console.log('Heart rate data loaded:', hrData.length, 'records');
+                }
+            }
+
+            updateStatisticsChart(stats) {
+                if (stats && stats.length > 0) {
+                    console.log('Statistics loaded:', stats.length, 'records');
+                }
+            }
+            
+            startDataSimulation() {
+                // Simulate realistic data changes
+                setInterval(() => {
+                    this.simulateHeartRate();
+                    this.simulateTemperature();
+                    this.simulateHumidity();
+                    this.updateStressLevel();
+                }, 3000);
+            }
+            
+            simulateHeartRate() {
+                // Simulate heart rate between 60-100 BPM
+                const variation = (Math.random() - 0.5) * 10;
+                this.heartRate = Math.max(60, Math.min(100, this.heartRate + variation));
+                this.heartRateEl.innerHTML = Math.round(this.heartRate) + '<span class="stat-unit">BPM</span>';
+                this.updateHeartRateStatus();
+            }
+            
+            simulateTemperature() {
+                // Simulate temperature between 18-26°C
+                const variation = (Math.random() - 0.5) * 2;
+                this.temperature = Math.max(18, Math.min(26, this.temperature + variation));
+                this.temperatureEl.innerHTML = Math.round(this.temperature) + '<span class="stat-unit">°C</span>';
+                this.updateTemperatureStatus();
+            }
+            
+            simulateHumidity() {
+                // Simulate humidity between 30-70%
+                const variation = (Math.random() - 0.5) * 10;
+                this.humidity = Math.max(30, Math.min(70, this.humidity + variation));
+                this.humidityEl.innerHTML = Math.round(this.humidity) + '<span class="stat-unit">%</span>';
+                this.updateHumidityStatus();
+            }
+            
+            updateHeartRateStatus() {
+                if (this.heartRate < 70) {
+                    this.heartRateStatusEl.textContent = 'Low Stress';
+                    this.heartRateStatusEl.className = 'stat-status status-low';
+                } else if (this.heartRate < 120) {
+                    this.heartRateStatusEl.textContent = 'Moderate Stress';
+                    this.heartRateStatusEl.className = 'stat-status status-moderate';
+                } else {
+                    this.heartRateStatusEl.textContent = 'High Stress';
+                    this.heartRateStatusEl.className = 'stat-status status-high';
+                }
+            }
+            
+            updateTemperatureStatus() {
+                if (this.temperature >= 20 && this.temperature <= 24) {
+                    this.temperatureStatusEl.textContent = 'Comfortable';
+                    this.temperatureStatusEl.className = 'stat-status status-low';
+                } else if (this.temperature >= 18 && this.temperature <= 26) {
+                    this.temperatureStatusEl.textContent = 'Moderate';
+                    this.temperatureStatusEl.className = 'stat-status status-moderate';
+                } else {
+                    this.temperatureStatusEl.textContent = 'Uncomfortable';
+                    this.temperatureStatusEl.className = 'stat-status status-high';
+                }
+            }
+            
+            updateHumidityStatus() {
+                if (this.humidity >= 40 && this.humidity <= 60) {
+                    this.humidityStatusEl.textContent = 'Optimal';
+                    this.humidityStatusEl.className = 'stat-status status-low';
+                } else if (this.humidity >= 30 && this.humidity <= 70) {
+                    this.humidityStatusEl.textContent = 'Moderate';
+                    this.humidityStatusEl.className = 'stat-status status-moderate';
+                } else {
+                    this.humidityStatusEl.textContent = 'Poor';
+                    this.humidityStatusEl.className = 'stat-status status-high';
+                }
+            }
+            
+            updateStressLevel() {
+                let stressScore = 0;
+                
+                // Heart rate stress score
+                if (this.heartRate >= 120) stressScore += 3;
+                else if (this.heartRate >= 70) stressScore += 1;
+                
+                // Temperature stress score
+                if (this.temperature < 18 || this.temperature > 26) stressScore += 3;
+                else if (this.temperature < 20 || this.temperature > 24) stressScore += 1;
+                
+                // Humidity stress score
+                if (this.humidity < 30 || this.humidity > 70) stressScore += 3;
+                else if (this.humidity < 40 || this.humidity > 60) stressScore += 1;
+                
+                // Determine overall stress level
+                if (stressScore <= 2) {
+                    this.stressLevel = 'low';
+                    this.overallStressEl.textContent = 'Low Stress';
+                    this.overallStressEl.className = 'stress-level low';
+                    this.stressDescriptionEl.textContent = 'Your current environment and vital signs indicate low stress levels. Keep up the good work!';
+                } else if (stressScore <= 5) {
+                    this.stressLevel = 'moderate';
+                    this.overallStressEl.textContent = 'Moderate Stress';
+                    this.overallStressEl.className = 'stress-level moderate';
+                    this.stressDescriptionEl.textContent = 'Some factors are contributing to moderate stress. Consider taking a break or adjusting your environment.';
+                } else {
+                    this.stressLevel = 'high';
+                    this.overallStressEl.textContent = 'High Stress';
+                    this.overallStressEl.className = 'stress-level high';
+                    this.stressDescriptionEl.textContent = 'Multiple factors are contributing to high stress levels. It\'s time to take action to reduce stress.';
+                }
+            }
+        }
+        
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            new HealthStatsApp();
+        });
+    </script>
+</body>
+</html>

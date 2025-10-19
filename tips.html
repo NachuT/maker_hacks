@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stress Tips - Stress Out</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .auth-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .tips-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .category-card.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .category-description {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            opacity: 0.9;
+            text-align: center;
+        }
+
+        .tips-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: none;
+        }
+
+        .tips-content.active {
+            display: block;
+        }
+
+        .tips-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .tips-header h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .tips-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .tip-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .tip-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .tip-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .tip-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .tip-description {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .tip-benefits {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        .back-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .emergency-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-top: 3rem;
+        }
+
+        .emergency-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: #ffeb3b;
+        }
+
+        .emergency-tips {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .emergency-tip {
+            background: rgba(255, 235, 59, 0.1);
+            border: 1px solid rgba(255, 235, 59, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .emergency-tip-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .emergency-tip-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .emergency-tip-description {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .tips-categories {
+                grid-template-columns: 1fr;
+            }
+            
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .emergency-tips {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">Stress Out</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="breathing.html" class="nav-link">Breathing</a>
+            <a href="stats.html" class="nav-link">Stats</a>
+            <a href="tips.html" class="nav-link active">Tips</a>
+        </div>
+        <div class="auth-section">
+            <div id="authContainer" class="auth-container"></div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Stress Management Tips</h1>
+            <p>Comprehensive strategies to help you manage and reduce stress</p>
+        </div>
+
+        <div class="tips-categories">
+            <div class="category-card" onclick="showCategory('physical')">
+                <div class="category-icon">💪</div>
+                <div class="category-title">Physical Wellness</div>
+                <div class="category-description">Exercise, nutrition, and sleep strategies for stress relief</div>
+            </div>
+
+            <div class="category-card" onclick="showCategory('mental')">
+                <div class="category-icon">🧠</div>
+                <div class="category-title">Mental Health</div>
+                <div class="category-description">Cognitive techniques and mindset shifts for stress management</div>
+            </div>
+
+            <div class="category-card" onclick="showCategory('social')">
+                <div class="category-icon">👥</div>
+                <div class="category-title">Social Support</div>
+                <div class="category-description">Building relationships and community for stress resilience</div>
+            </div>
+
+            <div class="category-card" onclick="showCategory('lifestyle')">
+                <div class="category-icon">🌱</div>
+                <div class="category-title">Lifestyle Changes</div>
+                <div class="category-description">Daily habits and environmental adjustments for stress reduction</div>
+            </div>
+        </div>
+
+        <div class="tips-content" id="physicalTips">
+            <button class="back-button" onclick="hideCategory()">← Back to Categories</button>
+            <div class="tips-header">
+                <h2>Physical Wellness</h2>
+                <p>Take care of your body to better manage stress</p>
+            </div>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-icon">🏃‍♀️</div>
+                    <div class="tip-title">Regular Exercise</div>
+                    <div class="tip-description">
+                        Engage in at least 30 minutes of moderate exercise daily. Physical activity releases endorphins and reduces cortisol levels.
+                    </div>
+                    <div class="tip-benefits">Benefits: Improved mood, better sleep, increased energy</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">😴</div>
+                    <div class="tip-title">Quality Sleep</div>
+                    <div class="tip-description">
+                        Maintain a consistent sleep schedule and aim for 7-9 hours nightly. Good sleep helps your body recover and better handle stress.
+                    </div>
+                    <div class="tip-benefits">Benefits: Better focus, improved immune function, emotional stability</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">🥗</div>
+                    <div class="tip-title">Balanced Nutrition</div>
+                    <div class="tip-description">
+                        Eat regular, nutritious meals. Avoid excessive caffeine and sugar, which can increase anxiety and stress levels.
+                    </div>
+                    <div class="tip-benefits">Benefits: Stable energy, better mood regulation, improved focus</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">🧘‍♂️</div>
+                    <div class="tip-title">Relaxation Techniques</div>
+                    <div class="tip-description">
+                        Practice progressive muscle relaxation, deep breathing, or gentle stretching to release physical tension.
+                    </div>
+                    <div class="tip-benefits">Benefits: Reduced muscle tension, lower blood pressure, calm mind</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">🌿</div>
+                    <div class="tip-title">Nature Connection</div>
+                    <div class="tip-description">
+                        Spend time outdoors regularly. Even 15 minutes in nature can significantly reduce stress hormones and improve mood.
+                    </div>
+                    <div class="tip-benefits">Benefits: Reduced cortisol, improved mood, enhanced creativity</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">💧</div>
+                    <div class="tip-title">Stay Hydrated</div>
+                    <div class="tip-description">
+                        Drink plenty of water throughout the day. Dehydration can increase cortisol levels and make stress feel more intense.
+                    </div>
+                    <div class="tip-benefits">Benefits: Better cognitive function, improved mood, physical comfort</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tips-content" id="mentalTips">
+            <button class="back-button" onclick="hideCategory()">← Back to Categories</button>
+            <div class="tips-header">
+                <h2>Mental Health</h2>
+                <p>Develop healthy thinking patterns and emotional resilience</p>
+            </div>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-icon">🧠</div>
+                    <div class="tip-title">Mindfulness Practice</div>
+                    <div class="tip-description">
+                        Practice mindfulness meditation daily. Focus on the present moment and observe thoughts without judgment.
+                    </div>
+                    <div class="tip-benefits">Benefits: Reduced anxiety, improved focus, emotional regulation</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">📝</div>
+                    <div class="tip-title">Journaling</div>
+                    <div class="tip-description">
+                        Write about your thoughts and feelings regularly. Journaling helps process emotions and gain perspective on stressful situations.
+                    </div>
+                    <div class="tip-benefits">Benefits: Emotional clarity, stress processing, self-awareness</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">🎯</div>
+                    <div class="tip-title">Goal Setting</div>
+                    <div class="tip-description">
+                        Set realistic, achievable goals. Break large tasks into smaller steps to avoid feeling overwhelmed.
+                    </div>
+                    <div class="tip-benefits">Benefits: Sense of accomplishment, reduced overwhelm, motivation</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">🔄</div>
+                    <div class="tip-title">Cognitive Reframing</div>
+                    <div class="tip-description">
+                        Challenge negative thought patterns. Look for alternative perspectives and focus on what you can control.
+                    </div>
+                    <div class="tip-benefits">Benefits: Reduced negative thinking, improved problem-solving, optimism</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">🎨</div>
+                    <div class="tip-title">Creative Expression</div>
+                    <div class="tip-description">
+                        Engage in creative activities like art, music, or writing. Creative expression provides a healthy outlet for emotions.
+                    </div>
+                    <div class="tip-benefits">Benefits: Emotional release, stress reduction, personal fulfillment</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">📚</div>
+                    <div class="tip-title">Continuous Learning</div>
+                    <div class="tip-description">
+                        Keep your mind engaged with new learning opportunities. Mental stimulation can boost confidence and reduce stress.
+                    </div>
+                    <div class="tip-benefits">Benefits: Increased confidence, sense of achievement, mental agility</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tips-content" id="socialTips">
+            <button class="back-button" onclick="hideCategory()">← Back to Categories</button>
+            <div class="tips-header">
+                <h2>Social Support</h2>
+                <p>Build strong relationships and community connections</p>
+            </div>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-icon">👥</div>
+                    <div class="tip-title">Social Connections</div>
+                    <div class="tip-description">
+                        Maintain regular contact with friends and family. Social support is crucial for stress resilience and emotional well-being.
+                    </div>
+                    <div class="tip-benefits">Benefits: Emotional support, reduced loneliness, shared experiences</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">🗣️</div>
+                    <div class="tip-title">Open Communication</div>
+                    <div class="tip-description">
+                        Express your feelings and needs clearly to others. Don't hesitate to ask for help when you need it.
+                    </div>
+                    <div class="tip-benefits">Benefits: Reduced isolation, better relationships, practical support</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">🤝</div>
+                    <div class="tip-title">Mutual Support</div>
+                    <div class="tip-description">
+                        Offer support to others in your community. Helping others can provide perspective and reduce your own stress.
+                    </div>
+                    <div class="tip-benefits">Benefits: Sense of purpose, gratitude, community connection</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">🏘️</div>
+                    <div class="tip-title">Community Involvement</div>
+                    <div class="tip-description">
+                        Participate in community activities or volunteer work. Being part of something larger can provide meaning and support.
+                    </div>
+                    <div class="tip-benefits">Benefits: Sense of belonging, purpose, expanded social network</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">👨‍⚕️</div>
+                    <div class="tip-title">Professional Support</div>
+                    <div class="tip-description">
+                        Consider seeking help from therapists, counselors, or support groups when stress becomes overwhelming.
+                    </div>
+                    <div class="tip-benefits">Benefits: Professional guidance, coping strategies, emotional processing</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">📱</div>
+                    <div class="tip-title">Digital Boundaries</div>
+                    <div class="tip-description">
+                        Set healthy boundaries with social media and digital communication. Limit exposure to stressful online content.
+                    </div>
+                    <div class="tip-benefits">Benefits: Reduced comparison, better focus, improved mood</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tips-content" id="lifestyleTips">
+            <button class="back-button" onclick="hideCategory()">← Back to Categories</button>
+            <div class="tips-header">
+                <h2>Lifestyle Changes</h2>
+                <p>Adjust your daily habits and environment for better stress management</p>
+            </div>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-icon">⏰</div>
+                    <div class="tip-title">Time Management</div>
+                    <div class="tip-description">
+                        Use time management techniques like prioritization and scheduling to reduce overwhelm and increase productivity.
+                    </div>
+                    <div class="tip-benefits">Benefits: Reduced overwhelm, increased productivity, better work-life balance</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">🚫</div>
+                    <div class="tip-title">Set Boundaries</div>
+                    <div class="tip-description">
+                        Learn to say no and protect your personal time. Healthy boundaries prevent burnout and overwhelm.
+                    </div>
+                    <div class="tip-benefits">Benefits: Reduced overwhelm, better work-life balance, self-respect</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">🏠</div>
+                    <div class="tip-title">Organized Environment</div>
+                    <div class="tip-description">
+                        Keep your living and working spaces organized. A cluttered environment can contribute to mental stress.
+                    </div>
+                    <div class="tip-benefits">Benefits: Reduced visual stress, improved focus, sense of control</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">📱</div>
+                    <div class="tip-title">Digital Detox</div>
+                    <div class="tip-description">
+                        Take regular breaks from screens and digital devices. Unplugging can reduce mental fatigue and stress.
+                    </div>
+                    <div class="tip-benefits">Benefits: Reduced mental fatigue, better sleep, improved focus</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">🎵</div>
+                    <div class="tip-title">Music Therapy</div>
+                    <div class="tip-description">
+                        Listen to calming music or nature sounds. Music can have a powerful effect on mood and stress levels.
+                    </div>
+                    <div class="tip-benefits">Benefits: Mood improvement, relaxation, emotional regulation</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">🌅</div>
+                    <div class="tip-title">Morning Routine</div>
+                    <div class="tip-description">
+                        Establish a calming morning routine that sets a positive tone for your day. Avoid starting with stressful activities.
+                    </div>
+                    <div class="tip-benefits">Benefits: Better mood, increased energy, reduced morning stress</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="emergency-section">
+            <h3>🚨 Emergency Stress Relief</h3>
+            <div class="emergency-tips">
+                <div class="emergency-tip">
+                    <div class="emergency-tip-icon">🫁</div>
+                    <div class="emergency-tip-title">4-7-8 Breathing</div>
+                    <div class="emergency-tip-description">Inhale for 4, hold for 7, exhale for 8. Repeat 3-4 times.</div>
+                </div>
+                <div class="emergency-tip">
+                    <div class="emergency-tip-icon">🚶‍♀️</div>
+                    <div class="emergency-tip-title">Take a Walk</div>
+                    <div class="emergency-tip-description">Even 5 minutes of walking can help reset your nervous system.</div>
+                </div>
+                <div class="emergency-tip">
+                    <div class="emergency-tip-icon">💧</div>
+                    <div class="emergency-tip-title">Cold Water</div>
+                    <div class="emergency-tip-description">Splash cold water on your face or hold ice cubes to activate your vagus nerve.</div>
+                </div>
+                <div class="emergency-tip">
+                    <div class="emergency-tip-icon">📞</div>
+                    <div class="emergency-tip-title">Call Someone</div>
+                    <div class="emergency-tip-description">Reach out to a trusted friend or family member for immediate support.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import local authentication module
+        import './local-auth-manager.js'
+        
+        function showCategory(category) {
+            // Hide all category cards
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.style.display = 'none';
+            });
+            
+            // Hide all tips content
+            document.querySelectorAll('.tips-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Show selected category content
+            document.getElementById(category + 'Tips').classList.add('active');
+        }
+        
+        function hideCategory() {
+            // Show all category cards
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.style.display = 'block';
+            });
+            
+            // Hide all tips content
+            document.querySelectorAll('.tips-content').forEach(content => {
+                content.classList.remove('active');
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breathing Exercises - Stress Out</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .auth-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .user-avatar img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        .user-email {
+            font-size: 0.7rem;
+            opacity: 0.8;
+            color: white;
+        }
+
+        .auth-button {
+            background: rgba(66, 133, 244, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 180px;
+            justify-content: center;
+        }
+
+        .auth-button:hover {
+            background: rgba(66, 133, 244, 1);
+            border-color: rgba(255, 255, 255, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .auth-button.sign-out {
+            background: rgba(244, 67, 54, 0.8);
+        }
+
+        .auth-button.sign-out:hover {
+            background: rgba(244, 67, 54, 1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .breathing-app {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .breathing-circle-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .breathing-circle {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 4s ease-in-out;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        .breathing-circle.inhale {
+            transform: scale(1.2);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.2) 100%);
+            box-shadow: 0 0 80px rgba(255, 255, 255, 0.4);
+        }
+
+        .breathing-circle.exhale {
+            transform: scale(0.8);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+        }
+
+        .breathing-text {
+            font-size: 2rem;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .phase-timer {
+            font-size: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .phase-indicators {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .phase-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .phase-dot.active {
+            background: rgba(255, 255, 255, 0.9);
+            transform: scale(1.3);
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .control-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .control-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .preset-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .preset-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .preset-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .preset-btn.active {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .slider-control {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .slider-control label {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .session-info {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+
+        .action-btn.start {
+            background: rgba(76, 175, 80, 0.8);
+            color: white;
+        }
+
+        .action-btn.stop {
+            background: rgba(244, 67, 54, 0.8);
+            color: white;
+        }
+
+        .action-btn.reset {
+            background: rgba(255, 152, 0, 0.8);
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .adaptive-controls {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+
+        .adaptive-toggle {
+            margin-bottom: 1rem;
+        }
+
+        .toggle-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .toggle-slider {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        input[type="checkbox"] {
+            display: none;
+        }
+
+        input[type="checkbox"]:checked + .toggle-slider {
+            background: rgba(76, 175, 80, 0.6);
+        }
+
+        input[type="checkbox"]:checked + .toggle-slider::before {
+            transform: translateX(30px);
+        }
+
+        .adaptive-status {
+            font-size: 1rem;
+            opacity: 0.9;
+            line-height: 1.5;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .breathing-circle {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .breathing-text {
+                font-size: 1.5rem;
+            }
+            
+            .controls {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .action-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">Stress Out</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="breathing.html" class="nav-link active">Breathing</a>
+            <a href="stats.html" class="nav-link">Stats</a>
+            <a href="tips.html" class="nav-link">Tips</a>
+        </div>
+        <div class="auth-section">
+            <div id="authContainer" class="auth-container"></div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Breathing Exercises</h1>
+            <p>Control your breathing patterns and find your calm</p>
+        </div>
+
+        <div class="breathing-app">
+            <div class="breathing-circle-container">
+                <div class="breathing-circle" id="breathingCircle">
+                    <div class="breathing-text" id="breathingText">Ready to Breathe</div>
+                    <div class="phase-timer" id="phaseTimer"></div>
+                </div>
+                <div class="phase-indicators" id="phaseIndicators"></div>
+            </div>
+
+            <div class="session-info">
+                <div class="info-item">
+                    <div class="info-value" id="sessionTime">00:00</div>
+                    <div class="info-label">Session Time</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-value" id="cycleCount">0</div>
+                    <div class="info-label">Cycles Completed</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-value" id="currentHeartRate">72</div>
+                    <div class="info-label">Current BPM</div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="control-section">
+                    <h3>Breathing Patterns</h3>
+                    <div class="preset-buttons">
+                        <button class="preset-btn" data-pattern="relax">Relax<br>4-2-6</button>
+                        <button class="preset-btn" data-pattern="focus">Focus<br>4-4-4</button>
+                        <button class="preset-btn" data-pattern="sleep">Sleep<br>4-0-8</button>
+                        <button class="preset-btn" data-pattern="energy">Energy<br>6-2-2</button>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h3>Custom Timing</h3>
+                    <div class="slider-group">
+                        <div class="slider-control">
+                            <label for="inhaleSlider">Inhale: <span id="inhaleValue">4</span>s</label>
+                            <input type="range" id="inhaleSlider" class="slider" min="1" max="10" value="4">
+                        </div>
+                        <div class="slider-control">
+                            <label for="holdSlider">Hold: <span id="holdValue">2</span>s</label>
+                            <input type="range" id="holdSlider" class="slider" min="0" max="10" value="2">
+                        </div>
+                        <div class="slider-control">
+                            <label for="exhaleSlider">Exhale: <span id="exhaleValue">6</span>s</label>
+                            <input type="range" id="exhaleSlider" class="slider" min="1" max="15" value="6">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="action-btn start" id="startBtn">Start</button>
+                <button class="action-btn stop" id="stopBtn" disabled>Stop</button>
+                <button class="action-btn reset" id="resetBtn">Reset</button>
+            </div>
+            
+            <div class="adaptive-controls">
+                <div class="adaptive-toggle">
+                    <label class="toggle-label">
+                        <input type="checkbox" id="adaptiveToggle" checked>
+                        <span class="toggle-slider"></span>
+                        Adaptive Mode
+                    </label>
+                </div>
+                <div class="adaptive-status" id="adaptiveStatus">
+                    Heart rate normal. Using standard breathing pattern.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import local authentication and data modules
+        import './local-auth-manager.js'
+        import './csv-data-manager.js'
+        
+        class BreathingApp {
+            constructor() {
+                this.isPlaying = false;
+                this.currentPhase = 0;
+                this.timeRemaining = 0;
+                this.sessionTime = 0;
+                this.cycleCount = 0;
+                this.startTime = null;
+                this.intervalId = null;
+                this.sessionIntervalId = null;
+                this.currentHeartRate = 72; // Placeholder - will come from API
+                this.adaptiveMode = true;
+                this.currentSessionId = null;
+                this.heartRateHistory = [];
+                this.environmentalData = null;
+                
+                this.patterns = {
+                    relax: { inhale: 4, hold: 2, exhale: 6 },
+                    focus: { inhale: 4, hold: 4, exhale: 4 },
+                    sleep: { inhale: 4, hold: 0, exhale: 8 },
+                    energy: { inhale: 6, hold: 2, exhale: 2 }
+                };
+                
+                this.currentPattern = this.patterns.relax;
+                this.phases = ['inhale', 'hold', 'exhale'].filter(phase => 
+                    this.currentPattern[phase] > 0
+                );
+                
+                this.initElements();
+                this.bindEvents();
+                this.updatePhaseIndicators();
+                this.simulateHeartRate(); // Start heart rate simulation
+            }
+            
+            initElements() {
+                this.breathingCircle = document.getElementById('breathingCircle');
+                this.breathingText = document.getElementById('breathingText');
+                this.phaseTimer = document.getElementById('phaseTimer');
+                this.phaseIndicators = document.getElementById('phaseIndicators');
+                this.sessionTimeEl = document.getElementById('sessionTime');
+                this.cycleCountEl = document.getElementById('cycleCount');
+                this.startBtn = document.getElementById('startBtn');
+                this.stopBtn = document.getElementById('stopBtn');
+                this.resetBtn = document.getElementById('resetBtn');
+                this.adaptiveToggle = document.getElementById('adaptiveToggle');
+                this.adaptiveStatus = document.getElementById('adaptiveStatus');
+                
+                this.sliders = {
+                    inhale: document.getElementById('inhaleSlider'),
+                    hold: document.getElementById('holdSlider'),
+                    exhale: document.getElementById('exhaleSlider')
+                };
+                
+                this.values = {
+                    inhale: document.getElementById('inhaleValue'),
+                    hold: document.getElementById('holdValue'),
+                    exhale: document.getElementById('exhaleValue')
+                };
+            }
+            
+            bindEvents() {
+                this.startBtn.addEventListener('click', () => this.start());
+                this.stopBtn.addEventListener('click', () => this.stop());
+                this.resetBtn.addEventListener('click', () => this.reset());
+                
+                // Preset buttons
+                document.querySelectorAll('.preset-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const pattern = e.target.dataset.pattern;
+                        this.setPattern(pattern);
+                        this.updatePresetButtons(pattern);
+                    });
+                });
+                
+                // Sliders
+                Object.keys(this.sliders).forEach(key => {
+                    this.sliders[key].addEventListener('input', (e) => {
+                        this.values[key].textContent = e.target.value;
+                        this.updateCustomPattern();
+                    });
+                });
+                
+                // Adaptive toggle
+                this.adaptiveToggle.addEventListener('change', (e) => {
+                    this.adaptiveMode = e.target.checked;
+                    this.updateAdaptiveStatus();
+                });
+            }
+            
+            setPattern(patternName) {
+                this.currentPattern = this.patterns[patternName];
+                this.phases = ['inhale', 'hold', 'exhale'].filter(phase => 
+                    this.currentPattern[phase] > 0
+                );
+                this.updatePhaseIndicators();
+            }
+            
+            updatePresetButtons(activePattern) {
+                document.querySelectorAll('.preset-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.dataset.pattern === activePattern) {
+                        btn.classList.add('active');
+                    }
+                });
+            }
+            
+            updateCustomPattern() {
+                this.currentPattern = {
+                    inhale: parseInt(this.sliders.inhale.value),
+                    hold: parseInt(this.sliders.hold.value),
+                    exhale: parseInt(this.sliders.exhale.value)
+                };
+                this.phases = ['inhale', 'hold', 'exhale'].filter(phase => 
+                    this.currentPattern[phase] > 0
+                );
+                this.updatePhaseIndicators();
+            }
+            
+            updatePhaseIndicators() {
+                this.phaseIndicators.innerHTML = '';
+                this.phases.forEach((phase, index) => {
+                    const dot = document.createElement('div');
+                    dot.className = 'phase-dot';
+                    if (index === this.currentPhase) {
+                        dot.classList.add('active');
+                    }
+                    this.phaseIndicators.appendChild(dot);
+                });
+            }
+            
+            async start() {
+                this.isPlaying = true;
+                this.startTime = Date.now();
+                this.currentPhase = 0;
+                this.timeRemaining = this.currentPattern[this.phases[0]];
+                this.cycleCount = 0;
+                this.heartRateHistory = [];
+                
+                this.startBtn.disabled = true;
+                this.stopBtn.disabled = false;
+                
+                // Create breathing session in database if user is authenticated
+                if (window.authManager && window.authManager.isUserAuthenticated()) {
+                    await this.createSessionInDatabase();
+                }
+                
+                this.updateBreathingCircle();
+                this.startBreathingCycle();
+                this.startSessionTimer();
+            }
+            
+            async stop() {
+                this.isPlaying = false;
+                this.startBtn.disabled = false;
+                this.stopBtn.disabled = true;
+                
+                clearInterval(this.intervalId);
+                clearInterval(this.sessionIntervalId);
+                
+                // Update session in database if user is authenticated
+                if (window.authManager && window.authManager.isUserAuthenticated()) {
+                    await this.updateSessionInDatabase();
+                }
+                
+                this.breathingCircle.className = 'breathing-circle';
+                this.breathingText.textContent = 'Ready to Breathe';
+                this.phaseTimer.textContent = '';
+            }
+            
+            reset() {
+                this.stop();
+                this.sessionTime = 0;
+                this.cycleCount = 0;
+                this.sessionTimeEl.textContent = '00:00';
+                this.cycleCountEl.textContent = '0';
+                this.currentPhase = 0;
+                this.updatePhaseIndicators();
+            }
+            
+            startBreathingCycle() {
+                this.intervalId = setInterval(() => {
+                    if (!this.isPlaying) return;
+                    
+                    this.timeRemaining--;
+                    this.phaseTimer.textContent = `${this.timeRemaining}s`;
+                    
+                    if (this.timeRemaining <= 0) {
+                        this.nextPhase();
+                    }
+                }, 1000);
+            }
+            
+            startSessionTimer() {
+                this.sessionIntervalId = setInterval(() => {
+                    if (!this.isPlaying) return;
+                    
+                    this.sessionTime = Math.floor((Date.now() - this.startTime) / 1000);
+                    this.sessionTimeEl.textContent = this.formatTime(this.sessionTime);
+                }, 1000);
+            }
+            
+            async nextPhase() {
+                this.currentPhase = (this.currentPhase + 1) % this.phases.length;
+                
+                if (this.currentPhase === 0) {
+                    this.cycleCount++;
+                    this.cycleCountEl.textContent = this.cycleCount;
+                    
+                    // Record breathing cycle in database if user is authenticated
+                    if (window.authManager && window.authManager.isUserAuthenticated()) {
+                        await this.recordBreathingCycle();
+                    }
+                }
+                
+                this.timeRemaining = this.currentPattern[this.phases[this.currentPhase]];
+                this.updateBreathingCircle();
+                this.updatePhaseIndicators();
+            }
+            
+            updateBreathingCircle() {
+                const phase = this.phases[this.currentPhase];
+                const phaseTexts = {
+                    inhale: 'Breathe In',
+                    hold: 'Hold',
+                    exhale: 'Breathe Out'
+                };
+                
+                this.breathingText.textContent = phaseTexts[phase];
+                this.breathingCircle.className = `breathing-circle ${phase}`;
+            }
+            
+            formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }
+            
+            simulateHeartRate() {
+                // Simulate realistic heart rate changes
+                setInterval(async () => {
+                    const variation = (Math.random() - 0.5) * 15;
+                    this.currentHeartRate = Math.max(60, Math.min(120, this.currentHeartRate + variation));
+                    this.heartRateHistory.push(this.currentHeartRate);
+                    this.updateHeartRateDisplay();
+                    
+                    // Record heart rate data in database if user is authenticated
+                    if (window.authManager && window.authManager.isUserAuthenticated()) {
+                        await this.recordHeartRateData();
+                    }
+                    
+                    if (this.adaptiveMode && this.isPlaying) {
+                        this.adaptBreathingPattern();
+                    }
+                }, 2000);
+            }
+            
+            updateHeartRateDisplay() {
+                // Update heart rate display if element exists
+                const heartRateEl = document.getElementById('currentHeartRate');
+                if (heartRateEl) {
+                    heartRateEl.textContent = Math.round(this.currentHeartRate);
+                }
+            }
+            
+            adaptBreathingPattern() {
+                const basePattern = { ...this.currentPattern };
+                
+                if (this.currentHeartRate >= 100) {
+                    // High stress - slower, deeper breathing
+                    this.currentPattern = {
+                        inhale: Math.max(6, basePattern.inhale + 2),
+                        hold: Math.max(3, basePattern.hold + 1),
+                        exhale: Math.max(8, basePattern.exhale + 3)
+                    };
+                } else if (this.currentHeartRate >= 85) {
+                    // Moderate stress - slightly slower breathing
+                    this.currentPattern = {
+                        inhale: Math.max(5, basePattern.inhale + 1),
+                        hold: Math.max(2, basePattern.hold + 1),
+                        exhale: Math.max(6, basePattern.exhale + 2)
+                    };
+                } else if (this.currentHeartRate < 70) {
+                    // Low stress - can use faster patterns
+                    this.currentPattern = {
+                        inhale: Math.max(3, basePattern.inhale - 1),
+                        hold: Math.max(1, basePattern.hold - 1),
+                        exhale: Math.max(4, basePattern.exhale - 1)
+                    };
+                }
+                
+                // Update phases and reset if needed
+                this.phases = ['inhale', 'hold', 'exhale'].filter(phase => 
+                    this.currentPattern[phase] > 0
+                );
+                
+                // If we're in the middle of a cycle, restart with new timing
+                if (this.isPlaying) {
+                    this.timeRemaining = this.currentPattern[this.phases[this.currentPhase]];
+                    this.updatePhaseIndicators();
+                }
+                
+                // Update the adaptive status display
+                this.updateAdaptiveStatus();
+            }
+            
+            getAdaptiveRecommendation() {
+                if (this.currentHeartRate >= 100) {
+                    return "High stress detected. Using calming breathing pattern.";
+                } else if (this.currentHeartRate >= 85) {
+                    return "Moderate stress detected. Adjusting breathing rhythm.";
+                } else if (this.currentHeartRate < 70) {
+                    return "Low stress detected. Using energizing pattern.";
+                } else {
+                    return "Heart rate normal. Using standard breathing pattern.";
+                }
+            }
+            
+            updateAdaptiveStatus() {
+                if (this.adaptiveMode) {
+                    this.adaptiveStatus.textContent = this.getAdaptiveRecommendation();
+                } else {
+                    this.adaptiveStatus.textContent = "Adaptive mode disabled. Using manual breathing patterns.";
+                }
+            }
+
+            // Database integration methods
+            async createSessionInDatabase() {
+                try {
+                    const user = window.authManager.getCurrentUser();
+                    if (!user) return;
+
+                    const sessionData = {
+                        session_start: new Date().toISOString(),
+                        breathing_pattern: this.currentPattern,
+                        pattern_name: this.getCurrentPatternName(),
+                        adaptive_mode: this.adaptiveMode,
+                        stress_before: this.getStressLevel()
+                    };
+
+                    const csvManager = window.csvDataManager;
+                    const session = await csvManager.createBreathingSession(user.id, sessionData);
+                    this.currentSessionId = session.id;
+                    console.log('Breathing session created:', session.id);
+                } catch (error) {
+                    console.error('Error creating breathing session:', error);
+                }
+            }
+
+            async updateSessionInDatabase() {
+                try {
+                    if (!this.currentSessionId) return;
+
+                    const user = window.authManager.getCurrentUser();
+                    if (!user) return;
+
+                    const updates = {
+                        session_end: new Date().toISOString(),
+                        duration_seconds: this.sessionTime,
+                        total_cycles: this.cycleCount,
+                        stress_after: this.getStressLevel()
+                    };
+
+                    // For CSV storage, we'll update the session by reading, modifying, and writing back
+                    const csvManager = window.csvDataManager;
+                    const sessions = await csvManager.readCSV(csvManager.sessionsFile);
+                    const sessionIndex = sessions.findIndex(s => s.id === this.currentSessionId);
+                    
+                    if (sessionIndex !== -1) {
+                        sessions[sessionIndex] = { ...sessions[sessionIndex], ...updates };
+                        await csvManager.writeCSV(csvManager.sessionsFile, sessions);
+                        console.log('Breathing session updated');
+                    }
+                } catch (error) {
+                    console.error('Error updating breathing session:', error);
+                }
+            }
+
+            async recordBreathingCycle() {
+                try {
+                    if (!this.currentSessionId) return;
+
+                    const cycleData = {
+                        session_id: this.currentSessionId,
+                        cycle_number: this.cycleCount,
+                        inhale_duration: this.currentPattern.inhale,
+                        hold_duration: this.currentPattern.hold,
+                        exhale_duration: this.currentPattern.exhale,
+                        cycle_start: new Date(Date.now() - this.getCycleDuration()).toISOString(),
+                        cycle_end: new Date().toISOString(),
+                        heart_rate_at_start: this.heartRateHistory[this.heartRateHistory.length - 2] || this.currentHeartRate,
+                        heart_rate_at_end: this.currentHeartRate
+                    };
+
+                    // For CSV storage, we'll store cycle data in the session record
+                    console.log('Breathing cycle recorded:', cycleData);
+                } catch (error) {
+                    console.error('Error recording breathing cycle:', error);
+                }
+            }
+
+            async recordHeartRateData() {
+                try {
+                    const user = window.authManager.getCurrentUser();
+                    if (!user) return;
+
+                    const hrData = {
+                        heart_rate_bpm: this.currentHeartRate,
+                        stress_level: this.getStressLevel(),
+                        activity_type: 'breathing'
+                    };
+
+                    const csvManager = window.csvDataManager;
+                    await csvManager.recordHeartRateData(user.id, hrData);
+                    console.log('Heart rate data recorded');
+                } catch (error) {
+                    console.error('Error recording heart rate data:', error);
+                }
+            }
+
+            async recordEnvironmentalData() {
+                try {
+                    const user = window.authManager.getCurrentUser();
+                    if (!user) return;
+
+                    // Simulate environmental data (in real app, this would come from sensors)
+                    const envData = {
+                        temperature: 22 + (Math.random() - 0.5) * 4, // 20-24°C
+                        humidity: 45 + (Math.random() - 0.5) * 20, // 35-55%
+                        air_quality: Math.floor(50 + Math.random() * 50), // 50-100
+                        light_level: Math.floor(300 + Math.random() * 200), // 300-500 lux
+                        noise_level: 40 + Math.random() * 20 // 40-60 dB
+                    };
+
+                    const csvManager = window.csvDataManager;
+                    const data = await csvManager.recordEnvironmentalData(user.id, envData);
+                    this.environmentalData = data;
+                    console.log('Environmental data recorded:', data);
+                } catch (error) {
+                    console.error('Error recording environmental data:', error);
+                }
+            }
+
+            // Helper methods
+            getCurrentPatternName() {
+                for (const [name, pattern] of Object.entries(this.patterns)) {
+                    if (pattern.inhale === this.currentPattern.inhale &&
+                        pattern.hold === this.currentPattern.hold &&
+                        pattern.exhale === this.currentPattern.exhale) {
+                        return name;
+                    }
+                }
+                return 'custom';
+            }
+
+            getStressLevel() {
+                if (this.currentHeartRate >= 100) return 'high';
+                if (this.currentHeartRate >= 85) return 'moderate';
+                return 'low';
+            }
+
+            getAverageHeartRate() {
+                if (this.heartRateHistory.length === 0) return this.currentHeartRate;
+                return this.heartRateHistory.reduce((sum, hr) => sum + hr, 0) / this.heartRateHistory.length;
+            }
+
+            getMinHeartRate() {
+                if (this.heartRateHistory.length === 0) return this.currentHeartRate;
+                return Math.min(...this.heartRateHistory);
+            }
+
+            getMaxHeartRate() {
+                if (this.heartRateHistory.length === 0) return this.currentHeartRate;
+                return Math.max(...this.heartRateHistory);
+            }
+
+            getCycleDuration() {
+                return this.currentPattern.inhale + this.currentPattern.hold + this.currentPattern.exhale;
+            }
+        }
+        
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            new BreathingApp();
+        });
+    </script>
+</body>
+</html>
